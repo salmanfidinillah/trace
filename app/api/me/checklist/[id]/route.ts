@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthContext } from "@/lib/server/auth-context";
+import { getAuthContext, isEmailVerified } from "@/lib/server/auth-context";
 import { getAdminDb } from "@/lib/server/firebase-admin";
 
 export const runtime = "nodejs";
@@ -7,6 +7,7 @@ export const runtime = "nodejs";
 export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   const auth = await getAuthContext(request);
   if (!auth) return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "Silakan masuk." } }, { status: 401 });
+  if (!isEmailVerified(auth)) return NextResponse.json({ error: { code: "EMAIL_NOT_VERIFIED", message: "Verifikasi email terlebih dahulu untuk mengubah checklist." } }, { status: 403 });
   const db = getAdminDb();
   if (!db) return NextResponse.json({ error: { code: "FIREBASE_NOT_CONFIGURED", message: "Firebase server belum dikonfigurasi." } }, { status: 503 });
   const { id } = await context.params;

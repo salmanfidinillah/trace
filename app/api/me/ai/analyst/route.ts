@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { aiQuestionSchema } from "@/lib/validation";
-import { getAuthContext } from "@/lib/server/auth-context";
+import { getAuthContext, isEmailVerified } from "@/lib/server/auth-context";
 import { getAdminDb } from "@/lib/server/firebase-admin";
 import { getDashboard } from "@/lib/server/scan-repository";
 import { analyzeSecurityQuestion } from "@/lib/ai/vertex";
@@ -11,6 +11,7 @@ export const runtime = "nodejs";
 export async function POST(request: Request) {
   const auth = await getAuthContext(request);
   if (!auth) return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "Silakan masuk untuk memakai Analis Keamanan AI." } }, { status: 401 });
+  if (!isEmailVerified(auth)) return NextResponse.json({ error: { code: "EMAIL_NOT_VERIFIED", message: "Verifikasi email terlebih dahulu untuk memakai Analis Keamanan AI." } }, { status: 403 });
   const parsed = aiQuestionSchema.safeParse(await request.json().catch(() => ({})));
   if (!parsed.success) return NextResponse.json({ error: { code: "INVALID_REQUEST", message: "Pertanyaan tidak valid." } }, { status: 400 });
   const db = getAdminDb();

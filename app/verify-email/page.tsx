@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, reload, sendEmailVerification, signOut, type User } from "firebase/auth";
+import { onAuthStateChanged, reload, signOut, type User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { getFirebaseClient } from "@/lib/firebase/client";
+import { getVerificationCooldownSeconds, sendTraceVerificationEmail } from "@/lib/firebase/verification";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function VerifyEmailPage() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   useEffect(() => {
     const firebase = getFirebaseClient();
@@ -26,14 +28,26 @@ export default function VerifyEmailPage() {
     });
   }, [router]);
 
+  useEffect(() => {
+    const refreshCooldown = () => setCooldownSeconds(getVerificationCooldownSeconds());
+    const initialRefresh = window.setTimeout(refreshCooldown, 0);
+    const interval = window.setInterval(() => setCooldownSeconds(getVerificationCooldownSeconds()), 1000);
+    return () => {
+      window.clearTimeout(initialRefresh);
+      window.clearInterval(interval);
+    };
+  }, []);
+
   async function resendVerification() {
     if (!user) return;
     setLoading(true); setError(""); setNotice("");
     try {
-      await sendEmailVerification(user);
+      await sendTraceVerificationEmail(user);
       setNotice("Link verifikasi baru sudah dikirim ke email kamu.");
-    } catch {
-      setError("Email verifikasi belum dapat dikirim. Coba lagi beberapa saat.");
+      setCooldownSeconds(getVerificationCooldownSeconds());
+    } catch (caught) {
+      const code = caught instanceof Error ? caught.message : "";
+      setError(code.includes("too-many-requests") ? "Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi." : "Email verifikasi belum dapat dikirim. Coba lagi beberapa saat.");
     } finally { setLoading(false); }
   }
 
@@ -46,6 +60,7 @@ export default function VerifyEmailPage() {
         setError("Email belum terverifikasi. Buka link dari email lalu coba cek lagi.");
         return;
       }
+      await user.getIdToken(true);
       router.push("/dashboard");
     } catch {
       setError("Status verifikasi belum dapat diperiksa. Coba lagi.");
@@ -69,7 +84,7 @@ export default function VerifyEmailPage() {
         {error && <p className="error-text" role="alert">{error}</p>}
         {notice && <p className="success-text" role="status">{notice}</p>}
         <button className="button button-primary" type="button" onClick={checkVerification} disabled={loading}>{loading ? "Memeriksa..." : "Saya sudah verifikasi"}</button>
-        <button className="button button-secondary" type="button" onClick={resendVerification} disabled={loading}>Kirim ulang email</button>
+        <button className="button button-secondary" type="button" onClick={resendVerification} disabled={loading || cooldownSeconds > 0}>{cooldownSeconds > 0 ? `Kirim ulang (${cooldownSeconds}s)` : "Kirim ulang email"}</button>
         <button className="text-button" type="button" onClick={leaveVerification}>Gunakan akun lain</button>
       </div>
     </main>

@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, type User } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import { getFirebaseClient } from "@/lib/firebase/client";
 import type { AiExplanation } from "@/lib/domain/types";
 
 export function AnalystClient() {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState<AiExplanation | null>(null);
@@ -14,7 +16,13 @@ export function AnalystClient() {
   const [loading, setLoading] = useState(false);
   const firebase = getFirebaseClient();
 
-  useEffect(() => firebase ? onAuthStateChanged(firebase.auth, setUser) : undefined, [firebase]);
+  useEffect(() => firebase ? onAuthStateChanged(firebase.auth, (nextUser) => {
+    if (nextUser && !nextUser.emailVerified) {
+      router.replace("/verify-email");
+      return;
+    }
+    setUser(nextUser);
+  }) : undefined, [firebase, router]);
 
   async function ask() {
     if (!user) return;

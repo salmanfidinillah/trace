@@ -1,4 +1,5 @@
 import { verifyIdToken } from "@/lib/server/firebase-admin";
+export { isEmailVerified } from "@/lib/server/auth-policy";
 
 export async function getAuthContext(request: Request) {
   const authorization = request.headers.get("authorization");

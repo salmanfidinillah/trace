@@ -6,13 +6,12 @@ import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signOut,
 } from "firebase/auth";
 import { getFirebaseClient } from "@/lib/firebase/client";
+import { sendTraceVerificationEmail } from "@/lib/firebase/verification";
 
 async function syncProfile(token: string, email: string) {
   const response = await fetch("/api/me/profile", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify({ email }) });
@@ -37,6 +36,8 @@ function getAuthErrorMessage(error: unknown) {
   if (code.includes("auth/popup-blocked")) return "Popup Google diblokir browser. Izinkan popup lalu coba lagi.";
   if (code.includes("auth/account-exists-with-different-credential")) return "Email ini sudah terdaftar dengan metode login lain.";
   if (code.includes("auth/too-many-requests")) return "Terlalu banyak percobaan. Tunggu beberapa saat lalu coba lagi.";
+  if (code.includes("auth/unauthorized-continue-uri")) return "Domain verifikasi belum diizinkan di Firebase. Tambahkan www.tracee.web.id ke Authorized domains.";
+  if (code.includes("auth/invalid-continue-uri")) return "URL verifikasi belum dikonfigurasi dengan benar.";
   if (code.includes("auth/invalid-credential") || code.includes("auth/invalid-login-credentials")) return "Email atau password tidak sesuai.";
   return "Email atau password tidak sesuai. Periksa kembali lalu coba lagi.";
 }
@@ -63,15 +64,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       const credential = isRegister ? await createUserWithEmailAndPassword(firebase.auth, email, password) : await signInWithEmailAndPassword(firebase.auth, email, password);
       const userEmail = credential.user.email ?? email;
       if (!isRegister && !credential.user.emailVerified) {
-        await sendEmailVerification(credential.user);
-        await signOut(firebase.auth);
-        setNotice("Email kamu belum terverifikasi. Link verifikasi baru sudah dikirim.");
+        await sendTraceVerificationEmail(credential.user);
+        router.push("/verify-email");
         return;
       }
       const token = await credential.user.getIdToken();
       await finishAuthentication(token, userEmail);
       if (isRegister) {
-        await sendEmailVerification(credential.user);
+        await sendTraceVerificationEmail(credential.user);
         router.push("/verify-email");
         return;
       }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import { getFirebaseClient } from "@/lib/firebase/client";
 
 type DashboardData = {
@@ -16,6 +17,7 @@ type DashboardData = {
 };
 
 export function DashboardClient() {
+  const router = useRouter();
   const firebase = useMemo(() => getFirebaseClient(), []);
   const [user, setUser] = useState<User | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
@@ -27,6 +29,7 @@ export function DashboardClient() {
     return onAuthStateChanged(firebase.auth, async (nextUser) => {
       setUser(nextUser);
       if (!nextUser) { setLoading(false); return; }
+      if (!nextUser.emailVerified) { setLoading(false); router.replace("/verify-email"); return; }
       try {
         const response = await fetch("/api/me/dashboard", { headers: { authorization: `Bearer ${await nextUser.getIdToken()}` } });
         const payload = await response.json();
@@ -36,7 +39,7 @@ export function DashboardClient() {
         setError(caught instanceof Error ? caught.message : "Dasbor tidak dapat dimuat.");
       } finally { setLoading(false); }
     });
-  }, [firebase]);
+  }, [firebase, router]);
 
   async function toggleChecklist(id: string, done: boolean) {
     if (!user) return;

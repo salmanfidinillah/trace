@@ -114,3 +114,12 @@ Dashboard monitoring tidak boleh menampilkan secret atau raw data pengguna.
 - [ ] Mobile layout diuji
 - [ ] Budget alert aktif
 - [x] README deployment tersedia
+
+## 8. Firebase Authentication notes
+
+- TRACE menggunakan `signInWithPopup` dari Firebase Web SDK.
+- `authDomain` tetap `trace-digital-exposure-2026.firebaseapp.com` karena aplikasi utama disajikan oleh Vercel. Firebase mendokumentasikan custom `authDomain` untuk domain yang dilayani Firebase Hosting; menggantinya ke `www.tracee.web.id` tanpa Firebase Hosting akan merusak endpoint `/__/auth/handler`.
+- `www.tracee.web.id` sudah terdaftar sebagai Firebase Authorized Domain.
+- Google Sign-In harus diaktifkan pada Firebase Console → Authentication → Sign-in method → Google. Provider ini tidak diaktifkan oleh source code Next.js.
+- Email verification memakai `sendEmailVerification()` dengan continue URL `/verify-email`, reload/token refresh, dan cooldown resend.
+- Template email verifikasi (subject, nama pengirim, dan copywriting TRACE) harus disesuaikan manual pada Firebase Console → Authentication → Templates. Custom email domain juga memerlukan verifikasi DNS dari Firebase.
