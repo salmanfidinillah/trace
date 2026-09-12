@@ -37,7 +37,7 @@ export function EmailScanForm({ compact = false }: { compact?: boolean }) {
       </div>
       {loading && <p className="loading-state" aria-live="polite"><span className="pulse" /> Memvalidasi, menganalisis, dan menghitung risiko...</p>}
       {error && <p className="error-text" role="alert">{error}</p>}
-      <p className="privacy-note"><strong>PRIVASI</strong> Email dipakai untuk pemeriksaan. Jangan masukkan password.</p>
+      <p className="privacy-note"><strong>PRIVASI</strong><span>Email dipakai untuk pemeriksaan. Jangan masukkan password.</span></p>
     </form>
   );
 }

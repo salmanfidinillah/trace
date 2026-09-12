@@ -30,7 +30,8 @@ button { cursor: pointer; }
 
 .site-header { position: sticky; top: 0; z-index: 20; padding: 16px 0 0; background: transparent; }
 .nav { display: flex; align-items: center; justify-content: space-between; min-height: 70px; gap: 22px; padding: 0 18px; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; background: rgba(5,7,8,.88); box-shadow: 0 10px 28px rgba(0,0,0,.2); backdrop-filter: blur(12px); }
-.brand { color: var(--text); font-size: 22px; font-weight: 900; letter-spacing: .04em; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); font-size: 22px; font-weight: 900; letter-spacing: .04em; }
+.brand-logo { width: 40px; height: 40px; border: 1px solid rgba(183,255,0,.35); border-radius: 10px; object-fit: cover; }
 .brand-mark { color: var(--acid); }
 .nav-links { display: flex; align-items: center; justify-content: center; gap: 20px; color: var(--muted); font-size: 13px; }
 .nav-links a:hover { color: var(--acid); }
@@ -75,8 +76,8 @@ button { cursor: pointer; }
 .card p { margin: 0; color: var(--muted); line-height: 1.6; }
 .card-number { color: var(--acid); font: 700 13px "Courier New", monospace; }
 .how-card { min-height: 190px; }
-.privacy-note { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.5; }
-.privacy-note strong { color: var(--acid); }
+.privacy-note { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 7px; margin: 14px auto 0; color: var(--muted); font-size: 13px; line-height: 1.5; text-align: center; }
+.privacy-note strong { color: var(--acid); font-family: "Courier New", Courier, monospace; font-size: 12px; letter-spacing: .08em; }
 
 .scanner-page { padding: 70px 0 100px; }
 .scanner-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: 28px; align-items: flex-start; }

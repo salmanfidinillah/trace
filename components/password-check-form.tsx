@@ -37,7 +37,7 @@ export function PasswordCheckForm() {
         <input className={`input ${error ? "input-error" : ""}`} type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Masukkan password untuk diperiksa" aria-label="Password yang ingin diperiksa" minLength={1} required />
         <button className="button button-primary" type="submit" disabled={loading || !password}>{loading ? "Memeriksa…" : "Cek Password →"}</button>
       </div>
-      <p className="privacy-note"><strong>PRIVASI</strong> Password diproses dengan k-anonymity. Password mentah tidak disimpan atau dikirim ke TRACE.</p>
+      <p className="privacy-note"><strong>PRIVASI</strong><span>Password diproses dengan k-anonymity. Password mentah tidak disimpan atau dikirim ke TRACE.</span></p>
       {error && <p className="error-text" role="alert">{error}</p>}
       {result && <div className={`recommendation ${result.status === "exposed_signal" ? "" : ""}`} role="status"><h3>{result.status === "exposed_signal" ? "PASSWORD TERDETEKSI" : result.status === "unavailable" ? "SUMBER TIDAK TERSEDIA" : "TIDAK DITEMUKAN"}</h3><p>{result.recommendation}</p></div>}
     </form>

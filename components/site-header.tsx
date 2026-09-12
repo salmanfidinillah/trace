@@ -1,10 +1,14 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="container nav">
-        <Link className="brand" href="/">TR<span className="brand-mark">A</span>CE.</Link>
+        <Link className="brand" href="/" aria-label="TRACE beranda">
+          <Image className="brand-logo" src="/logo.png" alt="" width={40} height={40} priority />
+          <span>TR<span className="brand-mark">A</span>CE.</span>
+        </Link>
         <nav className="nav-links" aria-label="Navigasi utama">
           <Link href="/">Beranda</Link>
           <Link href="/#fitur">Fitur</Link>
