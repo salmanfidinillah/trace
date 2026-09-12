@@ -29,7 +29,8 @@ export function Footer() {
           <h3>Informasi</h3>
           <Link href="/#fitur">Fitur</Link>
           <Link href="/#cara-kerja">Cara Kerja</Link>
-          <Link href="/">Tentang TRACE</Link>
+          <Link href="/tentang">Tentang TRACE</Link>
+          <Link href="/faq">FAQ</Link>
         </div>
         <div className="footer-column footer-connect">
           <h3>Terhubung</h3>
