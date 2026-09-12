@@ -160,7 +160,13 @@ Untuk demo lokal, gunakan:
 
 ```ini
 TRACE_BREACH_PROVIDER=demo
-VERTEX_AI_ENABLED=false
+VERTEX_AI_ENABLED=true
+VERTEX_AI_PROJECT_ID=your-google-cloud-project
+VERTEX_AI_LOCATION=global
+VERTEX_AI_MODEL=gemini-2.5-flash-lite
+# Optional when ADC is unavailable; Firebase Admin credentials may be reused.
+VERTEX_AI_CLIENT_EMAIL=your-service-account-email
+VERTEX_AI_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 ```
 
 Isi Firebase client dan Firebase Admin environment jika ingin menguji login serta workspace. Jangan pernah commit `.env.local`, private key, service account JSON, atau API key.
@@ -196,7 +202,7 @@ TRACE menerapkan validasi schema, rate limiting, optional App Check, token verif
 Beberapa batasan yang dinyatakan secara terbuka:
 
 - Provider email live/HIBP belum diaktifkan pada deployment demo karena API berbayar.
-- Vertex AI production bersifat optional dan hanya dijalankan jika `VERTEX_AI_ENABLED=true` serta kredensial cloud valid.
+- Vertex AI menjadi provider utama jika project dan kredensial cloud valid. `rule_based` hanya dipakai ketika Vertex AI gagal atau sengaja dinonaktifkan dengan `VERTEX_AI_ENABLED=false`.
 - Rate limit fallback dapat memakai memory proses ketika Firestore tidak tersedia.
 - Hasil “tidak ditemukan” tidak berarti akun pasti aman dan tidak mencakup seluruh internet.
 - Password checker tidak menjamin password aman; hasil hanya berlaku untuk sumber yang diperiksa.

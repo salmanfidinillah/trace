@@ -9,6 +9,7 @@ export function buildRuleBasedExplanation(result: Pick<SafeScanResult, "score" |
     ? "Tidak ada exposure yang ditemukan pada sumber data yang diperiksa. Tetap gunakan password unik dan aktifkan autentikasi dua faktor."
     : `Kami menemukan ${result.exposures.length} exposure. Tingkat risiko saat ini ${result.level === "critical" ? "kritis" : result.level === "high" ? "tinggi" : "perlu diperhatikan"}.`;
   return {
+    response: summary,
     summary,
     topRisks: result.exposures.slice(0, 3).map((exposure) => `${exposure.serviceName}: ${exposure.dataTypes.join(", ")}`),
     actions: result.recommendations.slice(0, 4).map((recommendation) => recommendation.title),
@@ -36,6 +37,10 @@ export async function runEmailScan(email: string): Promise<SafeScanResult> {
     providerName: lookup.providerName,
     isDemoData: lookup.isDemoData,
   };
-  result.aiExplanation = (await generateVertexExplanation(result)) ?? buildRuleBasedExplanation(result);
+  const vertexExplanation = await generateVertexExplanation(result);
+  result.aiExplanation = vertexExplanation ?? buildRuleBasedExplanation(result);
+  if (!vertexExplanation) {
+    console.warn("TRACE_AI_FALLBACK_USED", { surface: "email_scan", reason: "vertex_ai_unavailable" });
+  }
   return result;
 }

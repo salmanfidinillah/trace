@@ -29,6 +29,7 @@ export type Recommendation = {
 };
 
 export type AiExplanation = {
+  response: string;
   summary: string;
   topRisks: string[];
   actions: string[];

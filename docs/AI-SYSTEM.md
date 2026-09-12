@@ -113,7 +113,7 @@ Jika Vertex AI timeout, quota habis, output invalid, atau service unavailable:
 
 ## 9. Status implementasi MVP
 
-- Vertex AI hanya aktif jika `VERTEX_AI_PROJECT_ID` tersedia dan runtime memiliki permission yang sesuai.
+- Vertex AI menjadi provider utama jika `VERTEX_AI_PROJECT_ID` atau `GOOGLE_CLOUD_PROJECT` tersedia dan runtime memiliki permission yang sesuai. `VERTEX_AI_ENABLED=false` hanya untuk menonaktifkan secara eksplisit.
 - Fallback rule-based selalu tersedia ketika Vertex AI tidak dikonfigurasi, timeout, quota habis, atau output gagal divalidasi.
 - Demo competition tetap berjalan tanpa Vertex AI.
 

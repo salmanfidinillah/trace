@@ -25,6 +25,9 @@ export async function POST(request: Request) {
     exposures: (latest?.exposureSummary ?? []).map((exposure, index) => ({ id: exposure.id ?? `dashboard-${index}`, serviceName: exposure.serviceName ?? "Layanan tidak diketahui", year: exposure.year ?? null, dataTypes: exposure.dataTypes ?? [], severity: exposure.severity ?? "low" })),
     recommendations: recommendations.map((item) => ({ id: item.id, title: String(item.title ?? "Tindakan keamanan"), description: String(item.description ?? ""), priority: "moderate" as const, reason: "Security state pengguna", status: "todo" as const })),
   };
-  const explanation = parsed.data.question && process.env.VERTEX_AI_PROJECT_ID ? await analyzeSecurityQuestion(parsed.data.question, result) : null;
-  return NextResponse.json({ data: explanation ?? buildRuleBasedExplanation(result) });
+  const question = parsed.data.question ?? "Berikan ringkasan kondisi keamanan dan tindakan prioritas.";
+  const explanation = await analyzeSecurityQuestion(question, result);
+  if (explanation) return NextResponse.json({ data: explanation });
+  console.warn("TRACE_AI_FALLBACK_USED", { surface: "dashboard_analyst", reason: "vertex_ai_unavailable" });
+  return NextResponse.json({ data: buildRuleBasedExplanation(result) });
 }
