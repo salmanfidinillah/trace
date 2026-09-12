@@ -60,10 +60,18 @@ export default function VerifyEmailPage() {
         setError("Email belum terverifikasi. Buka link dari email lalu coba cek lagi.");
         return;
       }
-      await user.getIdToken(true);
+      const token = await user.getIdToken(true);
+      const profileResponse = await fetch("/api/me/profile", {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+        body: JSON.stringify({ email: user.email }),
+      });
+      if (!profileResponse.ok) throw new Error("PROFILE_SYNC_FAILED");
       router.push("/dashboard");
-    } catch {
-      setError("Status verifikasi belum dapat diperiksa. Coba lagi.");
+    } catch (caught) {
+      setError(caught instanceof Error && caught.message === "PROFILE_SYNC_FAILED"
+        ? "Email sudah terverifikasi, tetapi workspace belum siap. Coba lagi sebentar."
+        : "Status verifikasi belum dapat diperiksa. Coba lagi.");
     } finally { setLoading(false); }
   }
 
