@@ -1,6 +1,6 @@
 import { applicationDefault, cert, getApps, initializeApp, type App } from "firebase-admin/app";
 import type { AppCheck } from "firebase-admin/app-check";
-import { getAuth, type Auth } from "firebase-admin/auth";
+import type { Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 
 let cachedApp: App | null | undefined;
@@ -30,10 +30,17 @@ export function getAdminApp(): App | null {
   }
 }
 
-export function getAdminAuth(): Auth | null {
+export async function getAdminAuth(): Promise<Auth | null> {
   const app = getAdminApp();
   if (!app) return null;
-  return getAuth(app);
+  try {
+    const { getAuth } = await import("firebase-admin/auth");
+    return getAuth(app);
+  } catch (error) {
+    const code = error instanceof Error && "code" in error ? String((error as Error & { code?: unknown }).code) : "unknown";
+    console.error("TRACE_ADMIN_AUTH_MODULE_FAILED", { code });
+    return null;
+  }
 }
 
 export function getAdminDb(): Firestore | null {
@@ -53,7 +60,7 @@ export async function getAdminAppCheck(): Promise<AppCheck | null> {
 }
 
 export async function verifyIdToken(token: string) {
-  const auth = getAdminAuth();
+  const auth = await getAdminAuth();
   if (!auth) return null;
   return auth.verifyIdToken(token);
 }
