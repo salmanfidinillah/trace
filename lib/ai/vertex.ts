@@ -31,7 +31,7 @@ function buildPrompt(result: Pick<SafeScanResult, "score" | "level" | "exposures
 
 export async function generateVertexExplanation(result: Pick<SafeScanResult, "score" | "level" | "exposures" | "recommendations">, question?: string): Promise<AiExplanation | null> {
   const project = process.env.VERTEX_AI_PROJECT_ID;
-  if (!project) return null;
+  if (process.env.VERTEX_AI_ENABLED !== "true" || !project) return null;
   try {
     const vertex = new GoogleGenAI({ vertexai: true, project, location: process.env.VERTEX_AI_LOCATION ?? "global" });
     const response = await vertex.models.generateContent({
