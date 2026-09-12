@@ -47,6 +47,7 @@ Project saat ini berada pada tahap perancangan. Source code belum mulai dibangun
 - pilih provider breach yang legal dan tersedia;
 - buat Firebase project development/staging/production;
 - aktifkan Firebase Emulator Suite;
+- salin `.firebaserc.example` menjadi `.firebaserc` dan isi project id lokal;
 - finalisasi copy UI dan logo lomba;
 - siapkan prompt dan catatan AI;
 - siapkan test plan berdasarkan dokumen security.
