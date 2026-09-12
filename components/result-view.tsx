@@ -6,6 +6,7 @@ import type { SafeScanResult } from "@/lib/domain/types";
 import { riskLabel } from "@/lib/domain/risk";
 import { RiskBadge } from "@/components/risk-badge";
 import { Footer } from "@/components/footer";
+import { SecurityAdvisor } from "@/components/security-advisor";
 
 export function ResultView() {
   const raw = useSyncExternalStore(
@@ -29,6 +30,7 @@ export function ResultView() {
         <section className="panel"><span className="eyebrow">ANALISIS KEAMANAN AI</span><h2>{result.aiExplanation?.source === "vertex_ai" ? "Penjelasan personal" : "Penjelasan berbasis aturan"}</h2><p className="muted">{result.aiExplanation?.summary}</p><ul className="info-list" style={{ marginTop: 18 }}>{(result.aiExplanation?.actions ?? []).map((action) => <li key={action}>{action}</li>)}</ul><p className="small dim" style={{ marginTop: 18 }}>AI tidak menjadi sumber fakta breach. Hasil mengikuti data yang tersedia dan memiliki keterbatasan.</p></section>
         <section className="panel"><span className="eyebrow">TINDAKAN</span><h2>Prioritas perlindungan</h2>{result.recommendations.slice(0, 4).map((item) => <div className="recommendation" key={item.id}><h3>{item.title}</h3><p>{item.description}</p></div>)}<Link className="button button-primary" href="/register" style={{ marginTop: 20 }}>Simpan dan Pantau</Link></section>
       </div>
+      <SecurityAdvisor result={result} />
       <p className="small dim" style={{ marginTop: 18 }}>{result.limitations.join(" ")}</p>
     </div></main><Footer />
   </>;
