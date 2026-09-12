@@ -18,7 +18,7 @@ export function ResultView() {
 
   return <>
     <main className="scanner-page"><div className="container">
-      {result.isDemoData && <div className="demo-banner">MODE DEMO - hasil ini berasal dari TRACE Demo Dataset, bukan pemeriksaan breach nyata. Pencarian email nyata memerlukan API key atau subscription HIBP.</div>}
+      {result.isDemoData && <div className="demo-banner">DATA DEMO — Simulasi exposure untuk demonstrasi. Hasil ini bukan pemeriksaan breach nyata.</div>}
       <div className="result-header"><div><span className="eyebrow">{result.status === "exposure_found" ? "PERINGATAN" : "TIDAK DITEMUKAN"}</span><h1>{result.status === "exposure_found" ? "DATA TERDETEKSI" : "BELUM ADA EXPOSURE"}</h1><p className="muted">{result.exposureCount} exposure ditemukan pada sumber yang diperiksa.</p></div><div className="score-box"><div className="score">{result.score}</div><div className="score-label">/ 100 - RISIKO {riskLabel(result.level).toUpperCase()}</div></div></div>
       <p className="small dim source-attribution">Sumber data: {result.providerName}{result.providerName === "Have I Been Pwned" && <> · <a href="https://haveibeenpwned.com/" target="_blank" rel="noreferrer">Pelajari sumber breach</a></>}</p>
       <div className="result-grid">

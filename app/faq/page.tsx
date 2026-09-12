@@ -4,8 +4,8 @@ import { Footer } from "@/components/footer";
 
 const questions = [
   ["Apa itu TRACE?", "TRACE adalah platform keamanan digital yang membantu menemukan exposure email, menjelaskan risikonya, dan mengubah temuan menjadi rekomendasi serta checklist perlindungan."],
-  ["Apakah hasil scan email saat ini pemeriksaan dunia nyata?", "Pada konfigurasi demo, belum. Hasilnya berasal dari TRACE Demo Dataset dan sengaja diberi label agar tidak disalahartikan sebagai statistik dunia nyata. TRACE memiliki adapter HIBP untuk provider produksi, tetapi pemeriksaan email nyata membutuhkan API key atau subscription HIBP."],
-  ["Mengapa pemeriksaan email membutuhkan API key provider?", "Provider seperti HIBP mewajibkan autentikasi untuk pencarian email. API key harus disimpan di server-side environment dan tidak boleh ditaruh di NEXT_PUBLIC atau dikirim ke browser."],
+  ["Apakah hasil scan email saat ini pemeriksaan dunia nyata?", "Belum. Pada MVP kompetisi, hasil berasal dari TRACE Demo Dataset dan diberi disclosure DATA DEMO — Simulasi exposure untuk demonstrasi. Hasil ini bukan statistik dunia nyata."],
+  ["Apakah TRACE sudah memakai provider breach nyata?", "Belum pada tahap MVP kompetisi. Adapter provider tetap dipisahkan dari business logic agar sumber data nyata dapat ditambahkan nanti tanpa mengubah alur scanner."],
   ["Apakah TRACE menyimpan password saya?", "Tidak. TRACE tidak menyimpan raw password, tidak mengirim password ke Vertex AI, dan menggunakan pendekatan privacy-preserving untuk pemeriksaan password. Hasil password juga tidak diperlakukan sebagai riwayat rahasia yang disimpan."],
   ["Apakah ‘tidak ditemukan’ berarti akun saya pasti aman?", "Tidak. Hasil hanya berlaku untuk sumber dan provider yang diperiksa. Bisa saja ada kebocoran yang belum diketahui, belum masuk dataset, atau menggunakan alamat email lain. Tetap gunakan password unik, MFA, dan waspadai phishing."],
   ["Kenapa saya bisa scan tanpa login?", "Prinsip TRACE adalah Public = Check. Pemeriksaan dasar dibuat mudah diakses tanpa login. Account = Protect: akun diperlukan untuk menyimpan scan history, timeline, rekomendasi, checklist, dan workspace personal."],

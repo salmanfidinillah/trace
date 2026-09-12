@@ -86,7 +86,7 @@ export default function AboutPage() {
       <section className="info-section">
         <div className="container info-two-column">
           <div><span className="eyebrow">STATUS MVP</span><h2>Transparan tentang batasan.</h2></div>
-          <div className="info-copy"><p>Konfigurasi demo TRACE yang sedang dipakai menggunakan TRACE Demo Dataset, sehingga hasil demo diberi label dengan jelas dan bukan statistik dunia nyata.</p><p>Kode aplikasi sudah memiliki adapter untuk provider HIBP. Pemeriksaan email nyata membutuhkan API key atau subscription HIBP yang disimpan server-side; secret tersebut tidak boleh diletakkan di browser atau dikirim ke chat.</p><p>Setelah provider produksi tersedia, roadmap berikutnya adalah monitoring terjadwal, alert email, App Check yang lebih ketat, dan observability cloud. Semua itu akan diaktifkan hanya setelah alur dan biaya operasionalnya siap.</p></div>
+          <div className="info-copy"><p>Konfigurasi demo TRACE yang sedang dipakai menggunakan TRACE Demo Dataset, sehingga hasil demo diberi label dengan jelas dan bukan statistik dunia nyata.</p><p>Arsitektur provider sengaja dibuat modular agar sumber data nyata dapat ditambahkan kemudian tanpa mengubah alur email scanner. Untuk MVP kompetisi, provider breach nyata belum diaktifkan.</p><p>Setelah provider produksi tersedia, roadmap berikutnya adalah monitoring terjadwal, alert email, App Check yang lebih ketat, dan observability cloud. Semua itu akan diaktifkan hanya setelah alur dan biaya operasionalnya siap.</p></div>
         </div>
       </section>
 

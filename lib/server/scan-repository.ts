@@ -66,7 +66,10 @@ export async function getDashboard(db: Firestore, uid: string) {
   const scans = scansSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data(), createdAt: doc.data().createdAt?.toDate?.()?.toISOString() ?? null }));
   const latest = scans[0] as { score?: number; level?: string } | undefined;
   const checklist = checklistSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  const recommendationItems = recommendationsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Array<{ id: string; status?: string }>;
+  // The recommendation payload also contains its domain id. Keep the Firestore
+  // document id as the transport identity so recommendations from separate
+  // scans cannot collide in React lists or dashboard actions.
+  const recommendationItems = recommendationsSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as Array<{ id: string; status?: string }>;
   const alertItems = alertsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Array<{ id: string; read?: boolean }>;
   return {
     user: userSnapshot.exists ? { uid, ...userSnapshot.data() } : { uid },
