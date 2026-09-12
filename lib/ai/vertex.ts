@@ -46,9 +46,13 @@ export async function generateVertexExplanation(result: Pick<SafeScanResult, "sc
     });
     const text = response.text ?? "";
     const parsed = aiOutputSchema.safeParse(extractJson(text));
-    if (!parsed.success) return null;
+    if (!parsed.success) {
+      console.warn("TRACE_VERTEX_FALLBACK", { reason: "invalid_response", responseLength: text.length });
+      return null;
+    }
     return { ...parsed.data, source: "vertex_ai" };
-  } catch {
+  } catch (error) {
+    console.warn("TRACE_VERTEX_FALLBACK", { reason: error instanceof Error ? error.name : "unknown_error" });
     return null;
   }
 }
