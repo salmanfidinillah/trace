@@ -9,6 +9,7 @@ export function SiteHeader() {
           <Link href="/">Beranda</Link>
           <Link href="/#fitur">Fitur</Link>
           <Link href="/#cara-kerja">Cara Kerja</Link>
+          <Link href="/scan/email">Cek Email</Link>
           <Link href="/scan/password">Cek Password</Link>
         </nav>
         <div className="nav-actions">

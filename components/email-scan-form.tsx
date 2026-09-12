@@ -31,10 +31,11 @@ export function EmailScanForm({ compact = false }: { compact?: boolean }) {
   return (
     <form onSubmit={submit} noValidate>
       <div className="form-row">
-        <input className={`input ${error ? "input-error" : ""}`} type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email@contoh.com" aria-label="Alamat email" required maxLength={254} />
-        <button className="button button-primary" type="submit" disabled={loading}>{loading ? "Memeriksa…" : compact ? "Cek →" : "Cek Sekarang →"}</button>
+        <label className="sr-only" htmlFor="email-scan-input">Alamat email</label>
+        <input id="email-scan-input" className={`input ${error ? "input-error" : ""}`} type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Alamat email" aria-label="Alamat email" required maxLength={254} />
+        <button className="button button-primary" type="submit" disabled={loading}>{loading ? "Memeriksa..." : compact ? "Cek" : "Cek"}</button>
       </div>
-      {loading && <p className="loading-state" aria-live="polite"><span className="pulse" /> Memvalidasi, menganalisis, dan menghitung risiko…</p>}
+      {loading && <p className="loading-state" aria-live="polite"><span className="pulse" /> Memvalidasi, menganalisis, dan menghitung risiko...</p>}
       {error && <p className="error-text" role="alert">{error}</p>}
       <p className="privacy-note"><strong>PRIVASI</strong> Email dipakai untuk pemeriksaan. Jangan masukkan password.</p>
     </form>
