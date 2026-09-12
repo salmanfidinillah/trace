@@ -8,7 +8,9 @@ export async function getAuthContext(request: Request) {
   if (!token) return null;
   try {
     return await verifyIdToken(token);
-  } catch {
+  } catch (error) {
+    const code = error instanceof Error && "code" in error ? String((error as Error & { code?: unknown }).code) : "unknown";
+    console.error("TRACE_AUTH_TOKEN_VERIFY_FAILED", { code });
     return null;
   }
 }

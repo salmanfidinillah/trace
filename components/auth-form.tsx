@@ -15,7 +15,10 @@ import { sendTraceVerificationEmail } from "@/lib/firebase/verification";
 
 async function syncProfile(token: string, email: string) {
   const response = await fetch("/api/me/profile", { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${token}` }, body: JSON.stringify({ email }) });
-  if (!response.ok) throw new Error("PROFILE_SYNC_FAILED");
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error?.code ?? "PROFILE_SYNC_FAILED");
+  }
 }
 
 async function syncPendingScan(token: string) {
@@ -30,6 +33,8 @@ async function syncPendingScan(token: string) {
 
 function getAuthErrorMessage(error: unknown) {
   const code = error instanceof Error ? error.message : "";
+  if (code === "UNAUTHORIZED") return "Akun berhasil dibuat, tetapi sesi Firebase belum diterima server. Coba masuk ulang.";
+  if (code === "FIREBASE_NOT_CONFIGURED") return "Akun berhasil dibuat, tetapi Firebase server belum dikonfigurasi.";
   if (code === "PROFILE_SYNC_FAILED") return "Akun berhasil dibuat, tetapi workspace belum dapat disiapkan.";
   if (code.includes("auth/operation-not-allowed")) return "Login Google belum diaktifkan di Firebase.";
   if (code.includes("auth/popup-closed-by-user")) return "Jendela Google ditutup sebelum proses selesai.";

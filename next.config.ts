@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   typedRoutes: true,
   devIndicators: false,
+  serverExternalPackages: ["firebase-admin"],
 };
 
 export default nextConfig;
