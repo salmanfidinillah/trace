@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthContext } from "@/lib/server/auth-context";
 import { getAdminDb } from "@/lib/server/firebase-admin";
+import { emailScanSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 
@@ -10,9 +11,11 @@ export async function POST(request: Request) {
   const db = getAdminDb();
   if (!db) return NextResponse.json({ error: { code: "FIREBASE_NOT_CONFIGURED", message: "Firebase server belum dikonfigurasi." } }, { status: 503 });
   const body = await request.json().catch(() => ({}));
-  const email = typeof body.email === "string" ? body.email.slice(0, 254) : auth.email ?? null;
+  const parsedEmail = emailScanSchema.safeParse({ email: body.email ?? auth.email });
+  const email = parsedEmail.success ? parsedEmail.data.email.toLowerCase() : auth.email ?? null;
   const userRef = db.collection("users").doc(auth.uid);
-  await userRef.set({ uid: auth.uid, email, emailVerified: Boolean(auth.email_verified), updatedAt: new Date() }, { merge: true });
+  const existing = await userRef.get();
+  await userRef.set({ uid: auth.uid, email, emailVerified: Boolean(auth.email_verified), updatedAt: new Date(), ...(existing.exists ? {} : { createdAt: new Date() }) }, { merge: true });
   const checklist = await userRef.collection("checklist").limit(1).get();
   if (checklist.empty) {
     const defaults = [

@@ -3,6 +3,7 @@ import { passwordHashSchema } from "@/lib/validation";
 import { checkPwnedPasswordHash } from "@/lib/providers/password";
 import { consumeRateLimit } from "@/lib/server/rate-limit";
 import { requestFingerprint } from "@/lib/server/auth-context";
+import { verifyAppCheckToken } from "@/lib/server/firebase-admin";
 
 export const runtime = "nodejs";
 
@@ -10,6 +11,16 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const parsed = passwordHashSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: { code: "INVALID_REQUEST", message: "Permintaan pemeriksaan tidak valid." } }, { status: 400 });
+  if (process.env.TRACE_REQUIRE_APP_CHECK === "true") {
+    const appCheckToken = request.headers.get("X-Firebase-AppCheck");
+    if (!appCheckToken) return NextResponse.json({ error: { code: "APP_CHECK_REQUIRED", message: "Permintaan tidak dapat diverifikasi." } }, { status: 403 });
+    try {
+      const valid = await verifyAppCheckToken(appCheckToken);
+      if (!valid) throw new Error("Invalid App Check token");
+    } catch {
+      return NextResponse.json({ error: { code: "APP_CHECK_INVALID", message: "Permintaan tidak dapat diverifikasi." } }, { status: 403 });
+    }
+  }
   const allowed = await consumeRateLimit(`password-scan:${requestFingerprint(request)}`, 6);
   if (!allowed) return NextResponse.json({ error: { code: "RATE_LIMITED", message: "Terlalu banyak percobaan. Coba lagi beberapa saat lagi." } }, { status: 429 });
   const result = await checkPwnedPasswordHash(parsed.data.prefix.toUpperCase(), parsed.data.suffix.toUpperCase());

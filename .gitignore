@@ -3,6 +3,10 @@
 .env.*
 !.env.example
 
+# Local Firebase credentials
+.secrets/
+firebase-admin-key.json
+
 # Dependencies and build output
 node_modules/
 .next/

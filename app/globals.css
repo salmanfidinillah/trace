@@ -85,6 +85,7 @@ button { cursor: pointer; }
 .input::placeholder { color: var(--dim); }
 .input-error { border-color: var(--danger); }
 .error-text { margin-top: 10px; color: #ff7b80; font-size: 13px; }
+.success-text { margin-top: 10px; color: var(--success); font-size: 13px; }
 .info-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
 .info-list li { display: flex; gap: 10px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--border); color: var(--muted); line-height: 1.5; }
 .info-list li::before { content: "↳"; color: var(--acid); font-family: monospace; }

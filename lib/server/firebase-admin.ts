@@ -53,7 +53,7 @@ export async function verifyIdToken(token: string) {
 
 export async function verifyAppCheckToken(token: string) {
   const appCheck = getAdminAppCheck();
-  if (!appCheck) return false;
+  if (!appCheck) throw new Error("Firebase App Check belum dikonfigurasi.");
   await appCheck.verifyToken(token);
   return true;
 }

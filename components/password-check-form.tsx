@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { getFirebaseAppCheckHeaders } from "@/lib/firebase/client";
 
 async function sha1(value: string): Promise<string> {
   const bytes = new TextEncoder().encode(value);
@@ -19,7 +20,7 @@ export function PasswordCheckForm() {
     setError(""); setResult(null); setLoading(true);
     try {
       const hash = await sha1(password);
-      const response = await fetch("/api/scans/password", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ prefix: hash.slice(0, 5), suffix: hash.slice(5) }) });
+      const response = await fetch("/api/scans/password", { method: "POST", headers: { "content-type": "application/json", ...(await getFirebaseAppCheckHeaders()) }, body: JSON.stringify({ prefix: hash.slice(0, 5), suffix: hash.slice(5) }) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error?.message ?? "Pemeriksaan gagal.");
       setResult(payload.data);

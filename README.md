@@ -6,7 +6,9 @@ TRACE adalah platform keamanan digital berbahasa Indonesia untuk menemukan papar
 
 ## Status
 
-Project saat ini berada pada tahap perancangan. Source code belum mulai dibangun.
+Project saat ini berada pada tahap functional prototype. Firebase project,
+Authentication, Firestore, dan server-side integration sudah dikonfigurasi
+untuk development.
 
 ## Dokumen utama
 

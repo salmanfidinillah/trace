@@ -1,9 +1,10 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
+import { getToken, initializeAppCheck, ReCaptchaEnterpriseProvider, type AppCheck } from "firebase/app-check";
 
-let cached: { app: FirebaseApp; auth: Auth } | null | undefined;
+let cached: { app: FirebaseApp; auth: Auth; appCheck: AppCheck | null } | null | undefined;
 
-export function getFirebaseClient(): { app: FirebaseApp; auth: Auth } | null {
+export function getFirebaseClient(): { app: FirebaseApp; auth: Auth; appCheck: AppCheck | null } | null {
   if (cached !== undefined) return cached;
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,6 +19,26 @@ export function getFirebaseClient(): { app: FirebaseApp; auth: Auth } | null {
     return null;
   }
   const app = getApps().length ? getApp() : initializeApp(config);
-  cached = { app, auth: getAuth(app) };
+  let appCheck: AppCheck | null = null;
+  const siteKey = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY;
+  if (typeof window !== "undefined" && siteKey) {
+    try {
+      appCheck = initializeAppCheck(app, { provider: new ReCaptchaEnterpriseProvider(siteKey), isTokenAutoRefreshEnabled: true });
+    } catch {
+      appCheck = null;
+    }
+  }
+  cached = { app, auth: getAuth(app), appCheck };
   return cached;
+}
+
+export async function getFirebaseAppCheckHeaders(): Promise<Record<string, string>> {
+  const firebase = getFirebaseClient();
+  if (!firebase?.appCheck) return {};
+  try {
+    const token = await getToken(firebase.appCheck);
+    return token.token ? { "X-Firebase-AppCheck": token.token } : {};
+  } catch {
+    return {};
+  }
 }

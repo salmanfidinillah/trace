@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { getFirebaseAppCheckHeaders } from "@/lib/firebase/client";
 
 export function EmailScanForm({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
@@ -14,10 +15,11 @@ export function EmailScanForm({ compact = false }: { compact?: boolean }) {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("/api/scans/email", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) });
+      const response = await fetch("/api/scans/email", { method: "POST", headers: { "content-type": "application/json", ...(await getFirebaseAppCheckHeaders()) }, body: JSON.stringify({ email }) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error?.message ?? "Pemeriksaan gagal.");
       sessionStorage.setItem("trace:last-scan", JSON.stringify(payload.data));
+      sessionStorage.setItem("trace:last-scan-email", email.trim().toLowerCase());
       router.push("/scan/email/hasil");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Pemeriksaan gagal. Coba lagi.");

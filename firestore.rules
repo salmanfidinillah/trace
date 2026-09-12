@@ -26,17 +26,26 @@ service cloud.firestore {
 
       match /recommendations/{recommendationId} {
         allow read: if owner(uid);
-        allow write: if false;
+        allow create, delete: if false;
+        allow update: if owner(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt', 'completedAt'])
+          && request.resource.data.status in ['todo', 'in_progress', 'done'];
       }
 
       match /checklist/{itemId} {
         allow read: if owner(uid);
-        allow write: if false;
+        allow create, delete: if false;
+        allow update: if owner(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+          && request.resource.data.status in ['todo', 'done'];
       }
 
       match /alerts/{alertId} {
         allow read: if owner(uid);
-        allow write: if false;
+        allow create, delete: if false;
+        allow update: if owner(uid)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+          && request.resource.data.read is bool;
       }
 
       match /aiAnalyses/{analysisId} {

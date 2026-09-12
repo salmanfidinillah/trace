@@ -19,7 +19,8 @@ export async function POST(request: Request) {
     const appCheckToken = request.headers.get("X-Firebase-AppCheck");
     if (!appCheckToken) return NextResponse.json({ error: { code: "APP_CHECK_REQUIRED", message: "Permintaan tidak dapat diverifikasi." } }, { status: 403 });
     try {
-      await verifyAppCheckToken(appCheckToken);
+      const valid = await verifyAppCheckToken(appCheckToken);
+      if (!valid) throw new Error("Invalid App Check token");
     } catch {
       return NextResponse.json({ error: { code: "APP_CHECK_INVALID", message: "Permintaan tidak dapat diverifikasi." } }, { status: 403 });
     }
