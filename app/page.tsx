@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="container hero-grid">
           <div className="hero-content">
             <span className="eyebrow">PEMERIKSAAN EMAIL</span>
-            <h1>APAKAH EMAIL KAMU<br /><span>PERNAH TERPAPAR?</span></h1>
+            <h1>APAKAH EMAIL<br />KAMU<br /><span>PERNAH TERPAPAR?</span></h1>
             <p className="hero-copy">Cek apakah alamat email kamu pernah muncul dalam kebocoran data yang diketahui.</p>
             <EmailScanForm />
             <div className="hero-actions">
