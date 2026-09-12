@@ -1,4 +1,4 @@
-import { VertexAI } from "@google-cloud/vertexai";
+import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import type { AiExplanation, SafeScanResult } from "@/lib/domain/types";
 
@@ -33,10 +33,18 @@ export async function generateVertexExplanation(result: Pick<SafeScanResult, "sc
   const project = process.env.VERTEX_AI_PROJECT_ID;
   if (!project) return null;
   try {
-    const vertex = new VertexAI({ project, location: process.env.VERTEX_AI_LOCATION ?? "us-central1" });
-    const model = vertex.getGenerativeModel({ model: process.env.VERTEX_AI_MODEL ?? "gemini-2.0-flash-001" });
-    const response = await model.generateContent({ contents: [{ role: "user", parts: [{ text: buildPrompt(result, question) }] }] });
-    const text = response.response.candidates?.[0]?.content?.parts?.map((part) => ("text" in part ? part.text : "")).join("") ?? "";
+    const vertex = new GoogleGenAI({ vertexai: true, project, location: process.env.VERTEX_AI_LOCATION ?? "global" });
+    const response = await vertex.models.generateContent({
+      model: process.env.VERTEX_AI_MODEL ?? "gemini-2.5-flash",
+      contents: buildPrompt(result, question),
+      config: {
+        temperature: 0.2,
+        maxOutputTokens: 800,
+        responseMimeType: "application/json",
+        httpOptions: { timeout: 12_000 },
+      },
+    });
+    const text = response.text ?? "";
     const parsed = aiOutputSchema.safeParse(extractJson(text));
     if (!parsed.success) return null;
     return { ...parsed.data, source: "vertex_ai" };
