@@ -1390,20 +1390,20 @@ UI/UX dianggap siap masuk architecture dan development ketika:
 
 # 38. Next Phase
 
-Setelah `UI-UX.md`, urutan pengembangan TRACE:
+Setelah `docs/UI-UX.md`, urutan pengembangan TRACE:
 
 ``` text
 UI-UX.md
     ↓
-ARCHITECTURE.md
+docs/ARCHITECTURE.md
     ↓
-DATABASE.md
+docs/DATABASE.md
     ↓
-API.md
+docs/API.md
     ↓
-AI-SYSTEM.md
+docs/AI-SYSTEM.md
     ↓
-SECURITY.md
+docs/SECURITY.md
     ↓
 DEVELOPMENT
 ```

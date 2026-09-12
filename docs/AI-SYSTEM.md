@@ -2,7 +2,7 @@
 
 ## 1. Peran AI
 
-Vertex AI digunakan untuk:
+Vertex AI digunakan secara opsional untuk:
 
 - menerjemahkan hasil keamanan menjadi Bahasa Indonesia;
 - menjelaskan faktor risiko;
@@ -91,12 +91,12 @@ Simpan versi prompt, bukan secret atau data mentah, agar hasil dapat diaudit.
 
 ## 6. Prompt injection defense
 
-- provider data dipisahkan dari instruksi sistem;
-- field provider diperlakukan sebagai data, bukan instruksi;
-- output dibatasi schema;
-- HTML/markdown berbahaya disanitasi;
-- pertanyaan di luar security state ditolak atau dijawab dengan keterbatasan;
-- jangan memberikan instruksi ofensif.
+- context dibangun dari field terpilih, bukan raw provider response;
+- output dibatasi schema sebelum dikirim ke UI;
+- pertanyaan dibatasi panjangnya dan React melakukan output escaping;
+- fallback rule-based menjaga hasil tetap tersedia jika AI gagal.
+
+Ini adalah baseline MVP. Pengujian prompt injection adversarial dan sanitasi markdown khusus belum menjadi fitur terpisah.
 
 ## 7. Privacy dan Vertex AI
 
@@ -111,7 +111,13 @@ Jika Vertex AI timeout, quota habis, output invalid, atau service unavailable:
 - rekomendasi rule-based ditampilkan;
 - UI menyatakan analisis AI sementara tidak tersedia.
 
-## 9. Dokumentasi penggunaan AI untuk lomba
+## 9. Status implementasi MVP
+
+- Vertex AI hanya aktif jika `VERTEX_AI_PROJECT_ID` tersedia dan runtime memiliki permission yang sesuai.
+- Fallback rule-based selalu tersedia ketika Vertex AI tidak dikonfigurasi, timeout, quota habis, atau output gagal divalidasi.
+- Demo competition tetap berjalan tanpa Vertex AI.
+
+## 10. Dokumentasi penggunaan AI untuk lomba
 
 Siapkan catatan:
 

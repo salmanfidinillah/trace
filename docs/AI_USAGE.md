@@ -4,13 +4,13 @@ Dokumen ini disiapkan untuk memenuhi ketentuan lomba bahwa peserta harus memaham
 
 ## 1. AI yang digunakan
 
-Rencana penggunaan:
+Penggunaan pada project:
 
 - AI coding assistant untuk membantu scaffolding, refactoring, test, dan dokumentasi;
 - Vertex AI untuk fitur Analis Keamanan AI di dalam produk;
 - alat AI desain bila digunakan, dengan aset dan lisensi yang dicatat.
 
-Nama model, tanggal penggunaan, dan versi final dicatat ketika development dimulai.
+Runtime AI produk menggunakan Google Gen AI SDK untuk Vertex AI jika `VERTEX_AI_PROJECT_ID` tersedia. Konfigurasi model, lokasi, dan permission tetap bergantung pada environment deployment.
 
 ## 2. Penggunaan AI pada proses development
 
@@ -69,3 +69,5 @@ Simpan:
 - catatan modifikasi manual;
 - hasil review dan test;
 - keputusan yang ditolak dari saran AI beserta alasannya.
+
+Untuk deployment tanpa konfigurasi Vertex AI, fallback rule-based tetap menjadi jalur yang didukung dan tidak boleh disamarkan sebagai output Vertex AI.

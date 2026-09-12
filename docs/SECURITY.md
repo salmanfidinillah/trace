@@ -1,5 +1,7 @@
 # TRACE — SECURITY AND PRIVACY SPECIFICATION
 
+Dokumen ini menjelaskan **MVP security baseline** TRACE. Ini bukan klaim bahwa aplikasi sudah memiliki production-grade security untuk semua threat model.
+
 ## 1. Threat model utama
 
 | Ancaman | Dampak | Mitigasi |
@@ -63,8 +65,8 @@ Log boleh memuat requestId, latency, status, error code, service, dan versi engi
 
 ## 7. Abuse protection
 
-- Firebase App Check;
-- rate limit per IP/uid/fingerprint aman;
+- Firebase App Check jika diaktifkan melalui `TRACE_REQUIRE_APP_CHECK=true`;
+- rate limit per IP/fingerprint dengan fallback memory atau Firestore;
 - limit ukuran request;
 - timeout external call;
 - quota Vertex AI;
@@ -74,7 +76,7 @@ Log boleh memuat requestId, latency, status, error code, service, dan versi engi
 
 ## 8. Security headers
 
-Rencanakan:
+Masih menjadi hardening lanjutan yang perlu diselesaikan sebelum penggunaan production berisiko tinggi:
 
 - Content-Security-Policy;
 - Strict-Transport-Security;

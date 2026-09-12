@@ -1,55 +1,78 @@
 # TRACE
 
-> **Jaga data. Jaga masa depan.**
+> **Know your digital exposure.**
 
-TRACE adalah platform keamanan digital berbahasa Indonesia untuk menemukan paparan data, memahami risiko, dan melakukan langkah perlindungan.
+TRACE adalah functional prototype berbahasa Indonesia untuk membantu pengguna menemukan paparan data, memahami risiko, dan mengambil langkah perlindungan.
 
-## Status
+## Fitur utama
 
-Project saat ini berada pada tahap functional prototype. Firebase project,
-Authentication, Firestore, dan server-side integration sudah dikonfigurasi
-untuk development.
+- Pemeriksaan email tanpa login.
+- Pemeriksaan password dengan k-anonymity melalui Pwned Passwords range API.
+- Risk score deterministik dengan faktor yang dapat dijelaskan.
+- Rekomendasi perlindungan dan checklist personal.
+- Firebase Authentication dan workspace berbasis Firestore.
+- Analis Keamanan AI berbasis Vertex AI dengan fallback rule-based.
+- Dataset email demo yang diberi label secara transparan.
 
-## Dokumen utama
+## Stack
 
-1. [PROJECT_CONCEPT.md](PROJECT_CONCEPT.md) — konsep dan keputusan produk
-2. [FEATURES(1).md](FEATURES(1).md) — fitur dan acceptance criteria
-3. [USER-FLOW(1).md](USER-FLOW(1).md) — alur pengguna
-4. [ui-ux.md](ui-ux.md) — sistem UI/UX
-5. [ARCHITECTURE.md](ARCHITECTURE.md) — arsitektur aplikasi
-6. [DATABASE.md](DATABASE.md) — desain Firestore
-7. [API.md](API.md) — kontrak API
-8. [AI-SYSTEM.md](AI-SYSTEM.md) — Vertex AI dan guardrail
-9. [SECURITY.md](SECURITY.md) — keamanan dan privasi
-10. [DEPLOYMENT.md](DEPLOYMENT.md) — cloud deployment dan operasi
-11. [COMPETITION.md](COMPETITION.md) — kesiapan lomba
-12. [AI_USAGE.md](AI_USAGE.md) — dokumentasi pemanfaatan AI
+- Next.js 16, React 19, TypeScript, dan CSS custom.
+- Firebase Authentication, Cloud Firestore, dan Firebase Admin SDK.
+- Vertex AI melalui Google Gen AI SDK, hanya server-side.
+- Vercel untuk deployment Next.js production.
 
-## Keputusan teknologi
+## Arsitektur singkat
 
-- Web: Next.js, React, TypeScript
-- Auth: Firebase Authentication
-- Database: Cloud Firestore
-- Backend operations: Cloud Functions atau server runtime terproteksi
-- AI: Vertex AI, hanya server-side
-- Deployment: cloud dengan HTTPS
+Browser mengirim request ke Next.js Route Handlers. Server memvalidasi input, menjalankan provider adapter, menghitung risk score, lalu mengembalikan safe result. Data private diturunkan dari Firebase `uid`; operasi server menggunakan Firebase Admin SDK.
 
-## Prinsip penting
+## Demo dataset
 
-- bahasa antarmuka utama Bahasa Indonesia;
-- public user dapat melakukan pemeriksaan dasar tanpa login;
-- password tidak pernah disimpan atau dikirim ke AI;
-- AI hanya menjelaskan structured data yang sudah diverifikasi;
-- data private dibatasi berdasarkan Firebase `uid`;
-- data demo harus diberi label;
-- fitur roadmap tidak boleh diklaim sudah tersedia.
+Email scanner MVP menggunakan **TRACE Demo Dataset**, bukan katalog breach nyata. Data demo harus tetap ditampilkan sebagai simulasi saat presentasi. Provider breach nyata belum diintegrasikan pada MVP.
 
-## Sebelum coding
+## Menjalankan lokal
 
-- pilih provider breach yang legal dan tersedia;
-- buat Firebase project development/staging/production;
-- aktifkan Firebase Emulator Suite;
-- salin `.firebaserc.example` menjadi `.firebaserc` dan isi project id lokal;
-- finalisasi copy UI dan logo lomba;
-- siapkan prompt dan catatan AI;
-- siapkan test plan berdasarkan dokumen security.
+```bash
+npm install
+Copy-Item .env.example .env.local
+npm run dev
+```
+
+Quality checks:
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+## Environment dan Firebase
+
+Isi `.env.local` dari `.env.example` dengan Firebase Web configuration. Untuk operasi server, gunakan Firebase Admin service account melalui environment/secret manager atau Application Default Credentials. Jangan commit `.env.local`, private key, atau service account JSON.
+
+Firebase project yang digunakan TRACE adalah `trace-digital-exposure-2026`. Authentication, Firestore, dan rules perlu disiapkan sebelum menguji workspace personal.
+
+## AI behavior
+
+Vertex AI hanya menerima structured security state yang sudah disaring. Password, token, raw breach record, dan secret tidak dikirim ke AI. Jika Vertex AI tidak tersedia, hasil scan tetap berjalan dengan penjelasan rule-based.
+
+## Security baseline
+
+TRACE adalah MVP security baseline, bukan klaim production-grade security. Rate limit, validasi schema, server-side token verification, ownership rules, safe response, dan secret separation diterapkan sesuai scope kompetisi.
+
+## Dokumentasi
+
+- [Project concept](docs/PROJECT_CONCEPT.md)
+- [Features](docs/FEATURES.md)
+- [User flow](docs/USER-FLOW.md)
+- [UI/UX](docs/UI-UX.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Database](docs/DATABASE.md)
+- [API](docs/API.md)
+- [AI system](docs/AI-SYSTEM.md)
+- [AI usage](docs/AI_USAGE.md)
+- [Security](docs/SECURITY.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Competition readiness](docs/COMPETITION.md)
+- [Test plan](docs/TEST-PLAN.md)
+- [Firestore access policy](docs/FIRESTORE-RULES.md)

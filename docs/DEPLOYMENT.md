@@ -2,10 +2,10 @@
 
 ## 1. Target deployment
 
-TRACE dideploy ke cloud dengan komponen terkelola:
+TRACE menggunakan Vercel sebagai platform web/API utama dengan komponen terkelola:
 
 ```text
-Web app/API        → cloud runtime yang mendukung Next.js
+Web app/API        → Vercel Next.js runtime
 Authentication     → Firebase Authentication
 Database           → Cloud Firestore
 Server operations  → Cloud Functions atau server runtime terproteksi
@@ -13,7 +13,7 @@ AI                 → Vertex AI
 Monitoring         → Cloud Logging/Error Reporting
 ```
 
-Untuk implementasi final, pilih satu platform web utama dan dokumentasikan alasannya. Jangan mencampur beberapa platform deployment tanpa kebutuhan.
+Vercel dipilih karena mendukung Next.js Route Handlers, HTTPS, custom domain, server-side environment variable, dan deployment versioned tanpa infrastructure tambahan.
 
 ## 2. Environment
 
@@ -33,7 +33,8 @@ Untuk implementasi final, pilih satu platform web utama dan dokumentasikan alasa
 
 ### Production/demo lomba
 
-- project cloud terpisah dari development;
+- Firebase project TRACE `trace-digital-exposure-2026`;
+- Vercel project `tracee`;
 - service account minimum permission;
 - secret tidak masuk repository;
 - domain HTTPS;
@@ -112,4 +113,4 @@ Dashboard monitoring tidak boleh menampilkan secret atau raw data pengguna.
 - [ ] Error/empty/loading state diuji
 - [ ] Mobile layout diuji
 - [ ] Budget alert aktif
-- [ ] README deployment tersedia
+- [x] README deployment tersedia

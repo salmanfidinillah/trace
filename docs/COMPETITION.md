@@ -13,7 +13,7 @@ Karya tidak boleh:
 
 ## 2. Bukti penggunaan AI
 
-Sediakan dokumen `AI_USAGE.md` atau bagian README yang menjelaskan:
+Sediakan dokumen `docs/AI_USAGE.md` atau bagian README yang menjelaskan:
 
 - AI yang dipakai selama discovery, desain, coding, testing, dan dokumentasi;
 - tujuan setiap penggunaan AI;
