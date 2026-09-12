@@ -1,6 +1,6 @@
 import { applicationDefault, cert, getApps, initializeApp, type App } from "firebase-admin/app";
-import { getAppCheck, type AppCheck } from "firebase-admin/app-check";
-import { getAuth, type Auth } from "firebase-admin/auth";
+import type { AppCheck } from "firebase-admin/app-check";
+import type { Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 
 let cachedApp: App | null | undefined;
@@ -30,9 +30,15 @@ export function getAdminApp(): App | null {
   }
 }
 
-export function getAdminAuth(): Auth | null {
+export async function getAdminAuth(): Promise<Auth | null> {
   const app = getAdminApp();
-  return app ? getAuth(app) : null;
+  if (!app) return null;
+  try {
+    const { getAuth } = await import("firebase-admin/auth");
+    return getAuth(app);
+  } catch {
+    return null;
+  }
 }
 
 export function getAdminDb(): Firestore | null {
@@ -40,19 +46,25 @@ export function getAdminDb(): Firestore | null {
   return app ? getFirestore(app) : null;
 }
 
-export function getAdminAppCheck(): AppCheck | null {
+export async function getAdminAppCheck(): Promise<AppCheck | null> {
   const app = getAdminApp();
-  return app ? getAppCheck(app) : null;
+  if (!app) return null;
+  try {
+    const { getAppCheck } = await import("firebase-admin/app-check");
+    return getAppCheck(app);
+  } catch {
+    return null;
+  }
 }
 
 export async function verifyIdToken(token: string) {
-  const auth = getAdminAuth();
+  const auth = await getAdminAuth();
   if (!auth) return null;
   return auth.verifyIdToken(token);
 }
 
 export async function verifyAppCheckToken(token: string) {
-  const appCheck = getAdminAppCheck();
+  const appCheck = await getAdminAppCheck();
   if (!appCheck) throw new Error("Firebase App Check belum dikonfigurasi.");
   await appCheck.verifyToken(token);
   return true;
