@@ -1,0 +1,23 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+
+# Local tooling
+.firebase/
+.firebaserc.local
+firebase-debug.log
+*.log
+
+# Competition/source assets kept locally and intentionally excluded from GitHub
+/panduan lomba/
+/logo logo wajib/
+/referensi applikasi/
