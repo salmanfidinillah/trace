@@ -2,9 +2,6 @@ import { applicationDefault, cert, getApps, initializeApp, type App } from "fire
 import type { AppCheck } from "firebase-admin/app-check";
 import type { Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
-import { createRequire } from "node:module";
-
-const serverRequire = createRequire(`${process.cwd()}/package.json`);
 
 let cachedApp: App | null | undefined;
 
@@ -39,7 +36,7 @@ export async function getAdminAuth(): Promise<Auth | null> {
   try {
     // Keep Auth external to the Next bundle and load it through Node's native
     // CommonJS resolver. This avoids the ESM interop failure on Vercel.
-    const { getAuth } = serverRequire("firebase-admin/auth") as typeof import("firebase-admin/auth");
+    const { getAuth } = require("firebase-admin/auth") as typeof import("firebase-admin/auth");
     return getAuth(app);
   } catch (error) {
     const details = error instanceof Error
