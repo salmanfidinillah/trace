@@ -10,17 +10,13 @@ TRACE dirancang dengan prinsip **Check → Understand → Protect → Monitor**.
 
 TRACE AI Security Advisor memperkuat pengalaman tersebut dengan menjelaskan apa yang terjadi, risiko yang relevan, alasan skor, Security Health, serta Personalized Security Plan. AI menerima structured security state yang sudah disanitasi; password, token, raw provider response, dan data pengguna lain tidak masuk ke context AI.
 
-## Demo
-
-Website production: [https://www.tracee.web.id/](https://www.tracee.web.id/)
-Source code       : [https://github.com/salmanfidinillah/trace](https://github.com/salmanfidinillah/trace)
-[Panduan kesiapan kompetisi](docs/COMPETITION.md)
 
 **Karya Cabang Vibe Code — Web Application Development**<br>
 **Trunodjoyo Creative Competition (TCC) 2026 — UKM Triple-C, Universitas Trunojoyo Madura**<br>
 **Tema:** *Shaping Tomorrow: Digital Innovation, Artificial Intelligence, and Sustainable Communities*
 
 ## Jelajahi TRACE
+Website production: [https://www.tracee.web.id/](https://www.tracee.web.id/)
 
 - 🌐 [Platform live](https://www.tracee.web.id/)
 - 💻 [Source code](https://github.com/salmanfidinillah/trace)
@@ -29,13 +25,6 @@ Source code       : [https://github.com/salmanfidinillah/trace](https://github.c
 - 📑 [Deskripsi karya PDF](docs/TRACE_TCC_2026_Deskripsi_Karya.pdf)
 - 📄 [Panduan kesiapan kompetisi](docs/COMPETITION.md)
 
-## Tentang karya
-
-Kebocoran data sering berhenti sebagai berita teknis yang sulit dipahami pengguna. TRACE menerjemahkan hasil pemeriksaan exposure menjadi risk score yang dapat dijelaskan, bahasa yang sederhana, dan langkah perlindungan yang bisa dikerjakan satu per satu.
-
-TRACE dirancang dengan prinsip **Check → Understand → Protect → Monitor**. Pengunjung dapat melakukan pemeriksaan email dan password tanpa login. Akun Firebase membuka workspace personal untuk menyimpan hasil email scan, melihat rekomendasi, memantau timeline, dan mengelola checklist keamanan.
-
-TRACE AI Security Advisor memperkuat pengalaman tersebut dengan menjelaskan apa yang terjadi, risiko yang relevan, alasan skor, Security Health, serta Personalized Security Plan. AI menerima structured security state yang sudah disanitasi; password, token, raw provider response, dan data pengguna lain tidak masuk ke context AI.
 
 ## Kesesuaian dengan tema
 
@@ -234,10 +223,10 @@ Beberapa batasan yang dinyatakan secara terbuka:
 
 ## Developer and competition
 
-**Developer:** Salman Fidinillah<br>
-**Institution:** Universitas Sahid Surakarta<br>
-**Organizer:** UKM Triple-C (Creative Computer Club), Universitas Trunojoyo Madura<br>
-**Competition:** Trunodjoyo Creative Competition 2026 — Vibe Code<br>
-**Copyright:** © 2026 Salman Fidinillah
+**Developer    :** Salman Fidinillah<br>
+**Institution  :** Universitas Sahid Surakarta<br>
+**Organizer    :** UKM Triple-C (Creative Computer Club), Universitas Trunojoyo Madura<br>
+**Competition  :** Trunodjoyo Creative Competition 2026 — Vibe Code<br>
+**Copyright    :** © 2026 Salman Fidinillah
 
 TRACE dibuat untuk membantu lebih banyak orang memahami exposure digital mereka dan mengambil tindakan yang masuk akal. **Safer individuals create safer communities.**
