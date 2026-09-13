@@ -226,6 +226,7 @@ Beberapa batasan yang dinyatakan secara terbuka:
 ### Landing Page
 
 ![Landing page Trace](docs/screnshoot/landing-desktop.png)
+
 ![Landing page Trace](docs/screnshoot/landing.png)
 
 ### Dashboard desktop
@@ -236,6 +237,7 @@ Beberapa batasan yang dinyatakan secara terbuka:
 ### Tampilan Mobile
 
 ![Landing page mobile Trace](docs/screnshoot/landing-hp.png)
+
 ![Landing page mobile Trace](docs/screnshoot/hp.png)
 
 ## Developer and competition
