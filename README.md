@@ -221,6 +221,23 @@ Beberapa batasan yang dinyatakan secara terbuka:
 - [Competition readiness](docs/COMPETITION.md)
 - [Test plan](docs/TEST-PLAN.md)
 
+## Tampilan Aplikasi
+
+### Landing Page
+
+![Landing page Trace](docs/screnshoot/landing-desktop.png)
+![Landing page Trace](docs/screnshoot/landing.png)
+
+### Dashboard desktop
+
+![Landing page Trace](docs/screnshoot/dashboard.png)
+
+
+### Tampilan Mobile
+
+![Landing page mobile Trace](docs/screnshoot/landing-hp.png)
+![Landing page mobile Trace](docs/screnshoot/hp.png)
+
 ## Developer and competition
 
 **Developer    :** Salman Fidinillah<br>
